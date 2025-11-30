@@ -1,1 +1,157 @@
+name: "📚 Docs improvement"
+description: "Suggest improvements, fixes, or additions to AuroraStack documentation"
+title: "[Docs]: "
+labels:
+  - "type: docs"
+  - "status: triage"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve the **AuroraStack** documentation!  
+        Good docs are essential for a great developer experience.
 
+        Please answer the questions below so we can understand what needs to be improved.
+
+  - type: checkboxes
+    id: quick-checks
+    attributes:
+      label: Quick checks
+      description: Please confirm the following before submitting.
+      options:
+        - label: I’ve checked that this documentation issue has not already been reported in [existing issues](https://github.com/TheSkiF4er/AuroraStack/issues?q=is%3Aissue+label%3A%22type%3A+docs%22).
+          required: true
+
+  - type: dropdown
+    id: docs-area
+    attributes:
+      label: Documentation area
+      description: Which part of the documentation are you suggesting changes to?
+      multiple: true
+      options:
+        - "Root README (AuroraStack/README.md)"
+        - "Contribution docs (CONTRIBUTING.md)"
+        - "Code of Conduct (CODE_OF_CONDUCT.md)"
+        - "Security policy (SECURITY.md)"
+        - "Changelog (CHANGELOG.md)"
+        - "Docs site (apps/docs/*)"
+        - "Playground / examples (apps/playground/*)"
+        - "Package README (packages/**/README.md)"
+        - "Template docs (templates/**/README.md)"
+        - "Example docs (examples/**/README.md)"
+        - "Other / Not sure"
+    validations:
+      required: true
+
+  - type: input
+    id: docs-location
+    attributes:
+      label: Specific page or file (if known)
+      description: >
+        Provide a file path or URL to the documentation page, if possible.
+        This helps us navigate directly to the affected content.
+      placeholder: "e.g. apps/docs/docs/getting-started.md or https://aurorastack.dev/docs/schema"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: docs-type
+    attributes:
+      label: Type of documentation change
+      description: What kind of improvement are you suggesting?
+      multiple: true
+      options:
+        - "Fix typo / grammar"
+        - "Clarify confusing or ambiguous text"
+        - "Add missing information / details"
+        - "Improve examples / code snippets"
+        - "Add a new guide or tutorial"
+        - "Reorganize structure / navigation"
+        - "Update outdated information"
+        - "Other"
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-text
+    attributes:
+      label: Current behavior / text
+      description: >
+        What does the documentation currently say or do, and why is it problematic?
+        If possible, copy and paste the relevant part (or summarize it).
+      placeholder: |
+        Example:
+        The "Getting Started" guide assumes a global AuroraStack CLI is installed,
+        but does not explain how to install it or mention pnpm as the package manager.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-change
+    attributes:
+      label: Proposed improvement
+      description: >
+        Describe what you think the documentation should say or show instead.
+        You can include suggested wording, structure, or outline.
+      placeholder: |
+        Example:
+        - Add a section "Installing the AuroraStack CLI" with pnpm instructions.
+        - Clarify that the CLI is optional and show how to use pnpm dlx instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: code-snippets
+    attributes:
+      label: Suggested code snippets or examples
+      description: >
+        If your improvement involves code examples, provide them here.
+        Make sure they are minimal, accurate, and aligned with the current AuroraStack API design.
+      placeholder: |
+        ```bash
+        pnpm dlx create-aurora-app my-app
+        ```
+
+        ```ts
+        // Minimal example of a route with loader and action
+        export async function loader(ctx) { ... }
+        export async function action(ctx) { ... }
+        export default function Page() { ... }
+        ```
+    validations:
+      required: false
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Why this change is important
+      description: >
+        Explain why this documentation improvement helps AuroraStack users.
+        For example: avoids confusion, reduces onboarding time, prevents common mistakes, etc.
+      placeholder: |
+        This change would make it much easier for new users to get started without guessing
+        how to set up pnpm or the CLI. It also clarifies the relationship between templates,
+        examples, and the core packages.
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: >
+        Add any other context, links, screenshots, or notes that might help us understand the request.
+      placeholder: "Anything else the maintainers should know about this docs improvement..."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: contribution-interest
+    attributes:
+      label: Willing to help?
+      description: Let us know if you’d like to contribute a PR for this docs improvement.
+      options:
+        - label: I am willing to open a pull request to implement this documentation change.
+          required: false
+        - label: I’d prefer the maintainers to handle the change.
+          required: false
