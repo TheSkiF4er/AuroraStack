@@ -1,1 +1,20 @@
+# AuroraStack – FUNDING configuration
+# This file tells GitHub how people can financially support the project.
+# See: https://docs.github.com/en/github/administering-a-repository/displaying-a-sponsor-button-in-your-repository
 
+github: 
+  - TheSkiF4er
+
+# Uncomment and fill in any of the fields below as they become available.
+
+# patreon: your-patreon-id
+# open_collective: your-open-collective-slug
+# ko_fi: your-kofi-username
+# tidelift: npm/aurora-stack
+# community_bridge: your-project-slug
+# liberapay: your-liberapay-username
+# issuehunt: your-issuehunt-username
+# otechie: your-otechie-username
+# custom:
+#   - "https://buymeacoffee.com/your-username"
+#   - "https://your-personal-or-company-donation-page"
