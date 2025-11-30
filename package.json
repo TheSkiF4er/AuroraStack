@@ -1,1 +1,75 @@
+{
+  "name": "aurora-stack",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AuroraStack – a full-stack TypeScript framework with a unified data schema, universal rendering, and built-in AI support.",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "TheSkiF4er"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheSkiF4er/AuroraStack.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TheSkiF4er/AuroraStack/issues"
+  },
+  "homepage": "https://github.com/TheSkiF4er/AuroraStack#readme",
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "// monorepo entrypoints using Turborepo": "",
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "docs:dev": "turbo run docs:dev --filter=docs...",
+    "docs:build": "turbo run docs:build --filter=docs...",
+    "examples:dev": "turbo run dev --filter=examples/*",
+    "examples:build": "turbo run build --filter=examples/*",
 
+    "// schema & database workflow": "",
+    "codegen": "turbo run codegen",
+    "db:migrate": "turbo run db:migrate",
+
+    "// Changesets & releases": "",
+    "changeset": "changeset",
+    "release:version": "changeset version",
+    "release:publish": "changeset publish",
+    "release:prepare": "turbo run release:prepare",
+    "release": "pnpm release:version && pnpm install && pnpm release:publish",
+
+    "// Tooling & maintenance": "",
+    "clean": "rimraf .turbo node_modules && pnpm -r exec rimraf dist build .next .output storybook-static node_modules",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.0",
+    "@types/node": "^22.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "husky": "^9.0.0",
+    "lint-staged": "^15.0.0",
+    "prettier": "^3.0.0",
+    "rimraf": "^6.0.0",
+    "turbo": "^2.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,md,mdx}": [
+      "prettier --write"
+    ],
+    "*.{ts,tsx}": [
+      "eslint --max-warnings=0"
+    ]
+  }
+}
