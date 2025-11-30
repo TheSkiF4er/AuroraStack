@@ -1,1 +1,77 @@
+name: "Lint"
 
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: lint-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: true
+
+jobs:
+  lint:
+    name: "Lint (Node ${{ matrix.node-version }} • Ubuntu)"
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      # --------------------------------------------------
+      # Checkout repository
+      # --------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # --------------------------------------------------
+      # Setup pnpm & Node.js with caching
+      # --------------------------------------------------
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm
+
+      # --------------------------------------------------
+      # Install dependencies
+      # --------------------------------------------------
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # --------------------------------------------------
+      # Optional: ensure generated code is up to date
+      # This helps linting against the latest schema/codegen artefacts.
+      # --------------------------------------------------
+      - name: Run code generation
+        run: pnpm codegen
+
+      # --------------------------------------------------
+      # Lint all packages, apps, examples
+      # Orchestrated by Turborepo via the root "lint" script.
+      # --------------------------------------------------
+      - name: Run ESLint via pnpm lint
+        run: pnpm lint
+
+      # --------------------------------------------------
+      # Optional: Prettier formatting check (if configured)
+      # This step is non-blocking by default; you can make it required
+      # by removing the `||` part.
+      # --------------------------------------------------
+      - name: Run Prettier check (optional)
+        run: pnpm format || echo "Prettier check failed – ensure formatting is enforced in CI if required."
