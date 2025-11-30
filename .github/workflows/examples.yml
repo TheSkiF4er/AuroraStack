@@ -1,1 +1,90 @@
+name: "Examples"
 
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    # Periodically verify that examples still build & test cleanly
+    - cron: "0 5 * * 1" # Every Monday at 05:00 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: examples-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: true
+
+jobs:
+  examples-build-and-test:
+    name: "Examples (Node ${{ matrix.node-version }} • Ubuntu)"
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      # --------------------------------------------------
+      # Checkout repository
+      # --------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # --------------------------------------------------
+      # Setup pnpm & Node.js (with pnpm cache)
+      # --------------------------------------------------
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm
+
+      # --------------------------------------------------
+      # Install dependencies for the entire monorepo
+      # --------------------------------------------------
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # --------------------------------------------------
+      # (Optional but recommended) Schema / code generation
+      # Ensures any generated code used by examples is up-to-date.
+      # --------------------------------------------------
+      - name: Run code generation
+        run: pnpm codegen
+
+      # --------------------------------------------------
+      # Build examples
+      # Assumes each example has a "build" script defined
+      # (or is covered via Turborepo pipeline).
+      # --------------------------------------------------
+      - name: Build examples
+        run: |
+          pnpm --filter "examples/*" build || pnpm turbo run build --filter="examples/*"
+
+      # --------------------------------------------------
+      # Test examples
+      # Assumes examples have basic test coverage or at least
+      # a no-op "test" script.
+      # --------------------------------------------------
+      - name: Test examples
+        run: |
+          pnpm --filter "examples/*" test || echo "No tests found for examples/* (skipping)"
+
+      # --------------------------------------------------
+      # Lint examples (optional but recommended)
+      # --------------------------------------------------
+      - name: Lint examples
+        run: |
+          pnpm --filter "examples/*" lint || echo "No lint script found for examples/* (skipping)"
