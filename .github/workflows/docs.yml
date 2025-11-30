@@ -1,1 +1,129 @@
+name: "Docs"
 
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: true
+  DOCS_BUILD_DIR: apps/docs/build
+
+jobs:
+  build-docs:
+    name: "Build docs (Node ${{ matrix.node-version }} • Ubuntu)"
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      # --------------------------------------------------
+      # Checkout repository
+      # --------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # --------------------------------------------------
+      # Setup pnpm & Node.js
+      # --------------------------------------------------
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm
+
+      # --------------------------------------------------
+      # Install dependencies
+      # --------------------------------------------------
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # --------------------------------------------------
+      # (Optional) Generate code / schema before docs build
+      # --------------------------------------------------
+      - name: Run code generation
+        run: pnpm codegen
+
+      # --------------------------------------------------
+      # Build docs app
+      # Assumes a "build" script for the docs app,
+      # e.g. in apps/docs/package.json: { "scripts": { "build": "..." } }
+      # --------------------------------------------------
+      - name: Build docs
+        run: pnpm --filter docs build
+
+      # --------------------------------------------------
+      # Upload build artifact for deployment
+      # --------------------------------------------------
+      - name: Upload docs artifact
+        if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: aurorastack-docs
+          path: ${{ env.DOCS_BUILD_DIR }}
+
+  deploy-docs:
+    name: "Deploy docs to GitHub Pages"
+    needs: build-docs
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main'
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      # --------------------------------------------------
+      # Download build artifact
+      # --------------------------------------------------
+      - name: Download docs artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: aurorastack-docs
+          path: ./public
+
+      # --------------------------------------------------
+      # Configure Pages
+      # --------------------------------------------------
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # --------------------------------------------------
+      # Upload to GitHub Pages
+      # --------------------------------------------------
+      - name: Upload Pages artifact
+        id: upload-pages-artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+      # --------------------------------------------------
+      # Deploy to GitHub Pages
+      # --------------------------------------------------
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
