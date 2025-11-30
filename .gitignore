@@ -1,1 +1,137 @@
+# ============================================================
+# AuroraStack – .gitignore
+# Monorepo: pnpm + Turborepo + TypeScript + Node.js
+# ============================================================
 
+# ------------------------------------------------------------
+# Node / Package Managers
+# ------------------------------------------------------------
+node_modules/
+.pnpm-store/
+.npm/
+.yarn/
+.bun/
+
+# Lockfiles that are not used (we use pnpm-lock.yaml)
+package-lock.json
+yarn.lock
+
+# ------------------------------------------------------------
+# Build artifacts (packages, apps, examples, templates)
+# ------------------------------------------------------------
+dist/
+build/
+lib/
+esm/
+cjs/
+out/
+.tmp/
+.temp/
+.cache/
+
+# Next.js / similar frameworks
+.next/
+.vercel/
+.output/
+
+# Storybook / static sites
+storybook-static/
+docs-dist/
+site-dist/
+
+# Turborepo cache
+.turbo/
+
+# Coverage
+coverage/
+lcov.info
+.nyc_output/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ------------------------------------------------------------
+# TypeScript
+# ------------------------------------------------------------
+# TS incremental build info
+*.tsbuildinfo
+
+# Generated types / artifacts (monorepo-wide)
+**/generated/
+**/.aurora/
+
+# ------------------------------------------------------------
+# Environment files
+# ------------------------------------------------------------
+.env
+.env.*
+!.env.example
+
+# ------------------------------------------------------------
+# IDE / Editor / OS-specific
+# ------------------------------------------------------------
+
+# VS Code
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# IntelliJ / WebStorm / JetBrains
+.idea/
+*.iml
+
+# Other editors
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ------------------------------------------------------------
+# Misc
+# ------------------------------------------------------------
+
+# Local tooling
+.husky/_/
+*.local.*
+*.tmp
+*.bak
+*.orig
+
+# Debug / profiling
+*.pid
+*.seed
+*.prof
+profile-*.json
+
+# Archive / export files
+*.tgz
+*.tar
+*.gz
+*.zip
+
+# CLI / playground artifacts
+apps/playground/.cache/
+apps/playground/.output/
+
+# pnpm workspace-specific temp
+pnpm-debug.log*
