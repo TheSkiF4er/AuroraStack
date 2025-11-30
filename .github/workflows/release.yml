@@ -1,1 +1,108 @@
+name: "Release"
 
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: true
+
+jobs:
+  release:
+    name: "Release (Node ${{ matrix.node-version }} • Ubuntu)"
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write       # required to push version commits & tags
+      pull-requests: write  # required to open/update release PRs
+      packages: write       # required for GitHub Packages (if used)
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      # --------------------------------------------------
+      # Checkout repository
+      # --------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # required so Changesets can create tags and compare history
+
+      # --------------------------------------------------
+      # Setup pnpm & Node.js (with npm registry configured)
+      # --------------------------------------------------
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm
+          # Configure npm registry for publishing
+          registry-url: "https://registry.npmjs.org"
+
+      # --------------------------------------------------
+      # Install dependencies
+      # --------------------------------------------------
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # --------------------------------------------------
+      # (Recommended) Run release preparation checks
+      # This should run tests, lint, typecheck, build, etc.
+      # As defined in the root package.json:
+      #   "release:prepare": "turbo run release:prepare"
+      # and in turbo.json:
+      #   release:prepare dependsOn build/test/lint/typecheck
+      # --------------------------------------------------
+      - name: Run release preparation pipeline
+        run: pnpm release:prepare
+
+      # --------------------------------------------------
+      # Run Changesets: create a release PR or publish
+      #
+      # Behavior:
+      # - If there are unreleased changesets:
+      #     - On non-main PR branches, this step will not publish;
+      #       it will only prepare a release PR when run on main.
+      # - On main after the release PR is merged:
+      #     - This step runs `pnpm release:version` to bump versions,
+      #       then `pnpm release:publish` to publish packages to npm.
+      #
+      # Ensure you have set NPM_TOKEN in the repo's GitHub "Secrets and variables".
+      # --------------------------------------------------
+      - name: Run Changesets action (version & publish)
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          version: pnpm release:version
+          publish: pnpm release:publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # --------------------------------------------------
+      # Optional: Log result
+      # `changesets/action` outputs info we can use, e.g.:
+      #   steps.changesets.outputs.published
+      #   steps.changesets.outputs.hasChangesets
+      # --------------------------------------------------
+      - name: Post-release summary
+        if: always()
+        run: |
+          echo "Has changesets: ${{ steps.changesets.outputs.hasChangesets }}"
+          echo "Published: ${{ steps.changesets.outputs.published }}"
