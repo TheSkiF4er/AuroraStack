@@ -1,1 +1,110 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [
+    "package.json",
+    "pnpm-lock.yaml",
+    "tsconfig.base.json",
+    ".eslintrc.cjs",
+    ".prettierrc",
+    ".editorconfig"
+  ],
+  "pipeline": {
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
 
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [
+        "dist/**",
+        "build/**",
+        ".next/**",
+        ".output/**",
+        "storybook-static/**"
+      ],
+      "env": [
+        "NODE_ENV",
+        "DATABASE_URL",
+        "AURORA_ENV",
+        "AURORA_SCHEMA_DRIVER"
+      ]
+    },
+
+    "typecheck": {
+      "dependsOn": ["^typecheck"],
+      "outputs": [],
+      "env": ["NODE_ENV"]
+    },
+
+    "lint": {
+      "dependsOn": ["^lint"],
+      "outputs": []
+    },
+
+    "test": {
+      "dependsOn": ["build"],
+      "outputs": [
+        "coverage/**",
+        "test-results/**"
+      ],
+      "env": [
+        "NODE_ENV",
+        "AURORA_TEST_DB_URL"
+      ]
+    },
+
+    "format": {
+      "outputs": []
+    },
+
+    "docs:dev": {
+      "cache": false,
+      "persistent": true
+    },
+
+    "docs:build": {
+      "dependsOn": ["^build"],
+      "outputs": [
+        "apps/docs/build/**",
+        "apps/docs/.docusaurus/**"
+      ]
+    },
+
+    "examples:dev": {
+      "cache": false,
+      "persistent": true
+    },
+
+    "examples:build": {
+      "dependsOn": ["^build"],
+      "outputs": [
+        "examples/**/dist/**",
+        "examples/**/build/**"
+      ]
+    },
+
+    "codegen": {
+      "dependsOn": ["^codegen"],
+      "outputs": [
+        "**/.aurora/**",
+        "**/generated/**"
+      ]
+    },
+
+    "db:migrate": {
+      "dependsOn": ["codegen"],
+      "cache": false
+    },
+
+    "release:prepare": {
+      "dependsOn": [
+        "build",
+        "test",
+        "lint",
+        "typecheck"
+      ],
+      "outputs": []
+    }
+  }
+}
