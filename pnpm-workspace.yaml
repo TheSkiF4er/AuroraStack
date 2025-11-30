@@ -1,1 +1,23 @@
+packages:
+  # Applications (docs site, playground, etc.)
+  - "apps/*"
 
+  # Core framework packages
+  - "packages/*"
+
+  # Starter templates for `create-aurora-app`
+  - "templates/*"
+
+  # Shared tooling (eslint/tsconfig/jest configs, etc.)
+  - "tooling/*"
+
+  # Example apps showcasing AuroraStack usage
+  - "examples/*"
+
+  # Exclude build artifacts and nested installs
+  - "!**/dist/**"
+  - "!**/build/**"
+  - "!**/.next/**"
+  - "!**/.output/**"
+  - "!**/storybook-static/**"
+  - "!**/node_modules/**"
