@@ -1,5 +1,5 @@
 {
-  "name": "aurora-stack",
+  "name": "AuroraStack",
   "version": "0.1.0",
   "private": true,
   "description": "AuroraStack – a full-stack TypeScript framework with a unified data schema, universal rendering, and built-in AI support.",
