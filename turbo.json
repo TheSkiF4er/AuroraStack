@@ -1,0 +1,45 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [
+    "**/.env.*local",
+    "tsconfig.base.json"
+  ],
+  "pipeline": {
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**",
+        "build/**",
+        ".next/**",
+        "out/**"
+      ]
+    },
+    "test": {
+      "dependsOn": [
+        "build"
+      ],
+      "outputs": []
+    },
+    "lint": {
+      "outputs": []
+    },
+    "typecheck": {
+      "outputs": []
+    },
+    "codegen": {
+      "outputs": [
+        "generated/**"
+      ]
+    },
+    "db:migrate": {
+      "cache": false,
+      "outputs": []
+    }
+  }
+}
