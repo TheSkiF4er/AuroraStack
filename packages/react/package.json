@@ -1,0 +1,51 @@
+{
+  "name": "@aurora/react",
+  "version": "1.0.0",
+  "description": "React bindings (hooks stubs + types)",
+  "license": "Apache-2.0",
+  "author": "TheSkiF4er <opensource@cajeer.com>",
+  "homepage": "https://cajeer.com/AuroraStack",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheSkiF4er/AuroraStack.git",
+    "directory": "packages/react"
+  },
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "node ../../tooling/scripts/noop-lint.mjs",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@aurora/core": "workspace:*",
+    "@aurora/runtime-client": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsup": "^8.3.5",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.8",
+    "@types/react": "^18.3.12"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  }
+}
