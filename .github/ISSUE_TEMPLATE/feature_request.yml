@@ -1,179 +1,23 @@
-name: "✨ Feature request"
-description: "Propose a new feature, enhancement, or design change for AuroraStack"
+name: Feature request
+description: Suggest an idea
 title: "[Feature]: "
-labels:
-  - "type: feature"
-  - "status: triage"
+labels: ["enhancement"]
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Thank you for taking the time to suggest a feature for **AuroraStack**!  
-        Thoughtful feature requests help shape the framework and improve it for everyone.
-
-        Please provide as much detail as possible so we can understand the **problem**, the **solution**, and the **impact**.
-
-  - type: checkboxes
-    id: quick-checks
-    attributes:
-      label: Quick checks
-      description: Please confirm the following before submitting.
-      options:
-        - label: I’ve checked that this feature (or a very similar one) has not already been requested in [existing issues](https://github.com/TheSkiF4er/AuroraStack/issues?q=is%3Aissue+label%3A%22type%3A+feature%22).
-          required: true
-        - label: I’ve considered whether this might be better implemented as external code (user land) rather than in AuroraStack core.
-          required: true
-
-  - type: textarea
-    id: summary
-    attributes:
-      label: Summary
-      description: A short, high-level description of the requested feature.
-      placeholder: "Example: Add first-class support for streaming responses in loader functions."
-    validations:
-      required: true
-
   - type: textarea
     id: problem
     attributes:
-      label: Problem or use case
-      description: >
-        What problem are you trying to solve, or what use case is currently difficult or impossible with AuroraStack?
-        Focus on the problem, not just the solution.
-      placeholder: |
-        Example:
-        When building AI-powered chat UIs, it's difficult to stream partial responses to the client.
-        Right now, I have to manually wire up low-level HTTP APIs and bypass the usual loader/action model.
+      label: Problem statement
+      description: What problem are you trying to solve?
     validations:
       required: true
-
   - type: textarea
-    id: proposed-solution
+    id: proposal
     attributes:
       label: Proposed solution
-      description: >
-        Describe your vision of how AuroraStack should solve this problem.
-        This can include API design, configuration options, or example code.
-      placeholder: |
-        Example:
-        - Extend loader/action context with a `ctx.stream()` helper.
-        - Add a `stream` option to routes that returns an async iterator of chunks.
-        - Provide a `<Stream/>` React component to consume streamed data on the client.
+      description: What would you like to see?
     validations:
       required: true
-
-  - type: textarea
-    id: api-design
-    attributes:
-      label: Example API / usage
-      description: >
-        If you have ideas about the API or DX (developer experience), show them here with code examples.
-        This is often the most helpful part of a feature request.
-      placeholder: |
-        ```ts
-        // Example: streaming loader
-        export async function loader(ctx: LoaderContext) {
-          return ctx.stream(async function* () {
-            yield { status: 'thinking' };
-            const result = await ctx.ai.chat(...);
-            yield { status: 'done', result };
-          });
-        }
-        ```
-    validations:
-      required: false
-
-  - type: dropdown
-    id: packages
-    attributes:
-      label: Affected AuroraStack area / package(s)
-      description: Which parts of AuroraStack would this feature primarily affect?
-      multiple: true
-      options:
-        - "@aurora/core"
-        - "@aurora/router"
-        - "@aurora/runtime-server"
-        - "@aurora/runtime-client"
-        - "@aurora/schema"
-        - "@aurora/db"
-        - "@aurora/validation"
-        - "@aurora/react"
-        - "@aurora/auth"
-        - "@aurora/jobs"
-        - "@aurora/ai"
-        - "@aurora/ai-observability"
-        - "@aurora/ai-tools"
-        - "@aurora/cli"
-        - "@aurora/devtools"
-        - "@aurora/testing"
-        - "Templates"
-        - "Examples"
-        - "Docs"
-        - "Other / Not sure"
-    validations:
-      required: true
-
   - type: textarea
     id: alternatives
     attributes:
-      label: Alternatives you’ve considered
-      description: >
-        Have you tried workarounds or different approaches? Why are they not sufficient?
-      placeholder: |
-        Example:
-        - Implemented custom Node.js server handlers outside AuroraStack.
-        - Used a separate WebSocket server just for streaming, which increases complexity.
-        - These approaches bypass AuroraStack’s routing and DX, making apps harder to maintain.
-    validations:
-      required: false
-
-  - type: dropdown
-    id: breaking-change
-    attributes:
-      label: Is this a breaking change?
-      description: Would implementing this feature require breaking existing public APIs or behavior?
-      options:
-        - "No, this should be fully backwards compatible."
-        - "Possibly, but only with opt-in flags or new APIs."
-        - "Yes, this would likely be a breaking change."
-        - "Not sure"
-    validations:
-      required: true
-
-  - type: textarea
-    id: impact
-    attributes:
-      label: Expected impact and benefits
-      description: >
-        Who benefits from this feature? How does it improve AuroraStack (DX, performance, security, capabilities, etc.)?
-      placeholder: |
-        This feature would greatly improve DX for AI-heavy applications, making streaming a first-class pattern.
-        It would also help standardize how developers implement long-running or progressive operations.
-    validations:
-      required: true
-
-  - type: textarea
-    id: additional-context
-    attributes:
-      label: Additional context
-      description: >
-        Add any other details, links to prior art (other frameworks, libraries), diagrams, or notes that might help us evaluate and design this feature.
-      placeholder: |
-        - Links to other frameworks that solved this well
-        - Links to existing AuroraStack discussions or issues
-        - Rough architectural diagrams
-    validations:
-      required: false
-
-  - type: checkboxes
-    id: contribution-interest
-    attributes:
-      label: Willing to help?
-      description: Let us know if you’re interested in contributing code or design for this feature.
-      options:
-        - label: I am willing to work on a PR to implement this feature (with guidance if needed).
-          required: false
-        - label: I am willing to help review and test this feature.
-          required: false
-        - label: I’d prefer the maintainers to implement this feature.
-          required: false
+      label: Alternatives considered

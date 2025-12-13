@@ -1,215 +1,35 @@
-name: "🐞 Bug report"
-description: "Report a reproducible bug or regression in AuroraStack"
+name: Bug report
+description: Report a reproducible bug
 title: "[Bug]: "
-labels:
-  - "type: bug"
-  - "status: triage"
+labels: ["bug"]
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Thank you for taking the time to report a bug in **AuroraStack**!  
-        Please fill out the details below as completely as possible so we can investigate and fix the issue.
-
-  - type: checkboxes
-    id: checklist-quick
-    attributes:
-      label: Quick checks
-      description: Please confirm you've done these basic checks.
-      options:
-        - label: I am using the latest released version of AuroraStack (or I’ve checked that the issue is still present there).
-          required: true
-        - label: I’ve searched [existing issues](https://github.com/TheSkiF4er/AuroraStack/issues) and didn’t find a duplicate.
-          required: true
-
   - type: textarea
-    id: summary
+    id: what
     attributes:
-      label: Summary
-      description: A clear and concise description of the problem.
-      placeholder: >
-        Example: "Loader does not re-run after form submission in nested route when using resource X."
+      label: What happened?
+      description: A clear and concise description of the bug.
     validations:
       required: true
-
-  - type: dropdown
-    id: packages
-    attributes:
-      label: Affected AuroraStack package(s)
-      description: Which package(s) appear to be affected?
-      multiple: true
-      options:
-        - "@aurora/core"
-        - "@aurora/router"
-        - "@aurora/runtime-server"
-        - "@aurora/runtime-client"
-        - "@aurora/schema"
-        - "@aurora/db"
-        - "@aurora/validation"
-        - "@aurora/react"
-        - "@aurora/auth"
-        - "@aurora/jobs"
-        - "@aurora/ai"
-        - "@aurora/ai-observability"
-        - "@aurora/ai-tools"
-        - "@aurora/cli"
-        - "@aurora/devtools"
-        - "@aurora/testing"
-        - "Template (app-basic / app-saas / app-admin / app-marketplace)"
-        - "Example (minimal / saas-demo / admin-dashboard)"
-        - "Not sure / other"
-    validations:
-      required: true
-
-  - type: input
-    id: aurorastack-version
-    attributes:
-      label: AuroraStack version(s)
-      description: >
-        Provide the version(s) of AuroraStack or specific packages where you see this issue.
-        For example: "@aurora/core@0.1.0, @aurora/react@0.1.0".
-      placeholder: "@aurora/core@0.1.0, @aurora/react@0.1.0"
-    validations:
-      required: true
-
-  - type: input
-    id: node-version
-    attributes:
-      label: Node.js version
-      placeholder: "e.g. 18.19.0"
-    validations:
-      required: true
-
-  - type: input
-    id: pnpm-version
-    attributes:
-      label: pnpm version
-      placeholder: "e.g. 9.0.0"
-    validations:
-      required: false
-
-  - type: dropdown
-    id: environment
-    attributes:
-      label: Environment
-      description: Where are you seeing the issue?
-      multiple: true
-      options:
-        - "Local development"
-        - "Production"
-        - "CI environment"
-        - "Other"
-    validations:
-      required: true
-
-  - type: input
-    id: os
-    attributes:
-      label: Operating system
-      placeholder: "e.g. macOS 14, Ubuntu 22.04, Windows 11"
-    validations:
-      required: true
-
   - type: textarea
-    id: repro-steps
+    id: repro
     attributes:
       label: Steps to reproduce
-      description: >
-        Please describe **exact steps** so we can reproduce the bug.
-        If possible, link to a minimal repro repository or show the relevant code.
-      placeholder: |
-        1. Run `pnpm dev`
-        2. Open http://localhost:3000/projects
-        3. Click "Create" without entering a name
-        4. Observe error in console / unexpected behavior
+      description: Provide minimal steps or a repo link.
     validations:
       required: true
-
   - type: textarea
-    id: expected-behavior
+    id: expected
     attributes:
       label: Expected behavior
-      description: What did you expect to happen?
-      placeholder: "The loader should re-run and the UI should show the updated project list without errors."
     validations:
       required: true
-
-  - type: textarea
-    id: actual-behavior
-    attributes:
-      label: Actual behavior
-      description: What actually happened? Include any error messages or incorrect UI behavior.
-      placeholder: "The page stays stale and the new project is not visible until a full reload."
-    validations:
-      required: true
-
-  - type: textarea
-    id: logs
-    attributes:
-      label: Logs / error messages
-      description: >
-        Paste any relevant logs, stack traces, or terminal output.
-        Please redact any sensitive information before submitting.
-      render: shell
-      placeholder: |
-        Error: Something went wrong
-            at ...
-    validations:
-      required: false
-
-  - type: textarea
-    id: minimal-code
-    attributes:
-      label: Minimal code sample or repository
-      description: >
-        If possible, provide a minimal code snippet or link to a reproduction repository / sandbox.
-        This greatly increases the chance we can quickly fix the issue.
-      placeholder: |
-        ```ts
-        // Example route file that reproduces the issue
-        export async function loader(ctx) {
-          ...
-        }
-        ```
-    validations:
-      required: false
-
-  - type: dropdown
-    id: regression
-    attributes:
-      label: Is this a regression?
-      description: Did this use to work in a previous version of AuroraStack?
-      options:
-        - "Yes"
-        - "No"
-        - "Not sure"
-    validations:
-      required: true
-
   - type: input
-    id: previous-version
+    id: version
     attributes:
-      label: If yes, which previous version worked?
-      placeholder: "e.g. @aurora/core@0.0.9"
-    validations:
-      required: false
-
+      label: AuroraStack version
+      placeholder: "1.0.0"
   - type: textarea
-    id: additional-context
+    id: env
     attributes:
-      label: Additional context
-      description: >
-        Add any other context, screenshots, diagrams, or notes that might help us understand the issue.
-      placeholder: "Anything else the maintainers should know..."
-    validations:
-      required: false
-
-  - type: checkboxes
-    id: final-checklist
-    attributes:
-      label: Final checklist
-      options:
-        - label: I am willing to help investigate / debug this issue if needed.
-          required: false
-        - label: I am willing to submit a PR to help fix this issue.
-          required: false
+      label: Environment
+      description: Node version, OS, package manager, etc.
