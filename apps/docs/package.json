@@ -1,0 +1,8 @@
+{
+  "name": "@aurora/docs",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "node -e \"console.log('Docs app placeholder. Implement VitePress/Docusaurus as needed.')\""
+  }
+}
